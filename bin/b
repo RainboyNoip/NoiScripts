@@ -34,6 +34,9 @@ if not ARGS["output"]:
 
 verbose("编译的代码 %s\n" % ARGS["file_name"])
 verbose("编译为: %s\n" % ARGS["output"])
+if not ARGS["verbose"]:
+    sys.stderr.writelines("[{file_name}] ====> [{output}]".format(**ARGS))
+
 
 compile_args = ["g++","-DDEBUG","-DLOCAL","-include","/home/rainboy/mycode/noi_cpp_tools/cpp_tools.h","-g","-o","{output}","{file_name}"]
 verbose("编译参数为:\n")
@@ -46,6 +49,8 @@ os.system(" ".join(compile_args).format(**ARGS))
 # 检查输入数据
 
 if not os.path.exists(ARGS["in"]):
-    verbose("没有找到数据文件 %s,退出\n" % ARGS["in"])
+    print("没有找到数据文件 %s,退出\n" % ARGS["in"],file=sys.stderr)
     sys.exit(1)
+sys.stderr.writelines("./{output} < {in}".format(**ARGS))
+sys.stderr.flush()
 os.system("./{output} < {in}".format(**ARGS))
